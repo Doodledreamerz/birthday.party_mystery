@@ -1,0 +1,30 @@
+name: Build Windows Game
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install libraries
+      run: |
+        pip install pygame
+        pip install pyinstaller
+
+    - name: Build exe
+      run: |
+        pyinstaller --onefile --windowed hello.py
+
+    - name: Upload exe
+      uses: actions/upload-artifact@v3
+      with:
+        name: game
+        path: dist/*.exe
